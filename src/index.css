@@ -1,1 +1,18 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+    --bg : #FAFAFA;
+    --bg-gradient : none;
+    --card-bg : #ffffff;
+    --blue: #0D93F2;
+    --text : #314158;
+}
+
+.dark {
+    --bg : #4f6fc0;
+    --bg-gradient :linear-gradient(100deg, #0E1629 0%, #070B15 80%);
+    --card-bg : #1D293D;
+    --blue: #0D93F2;
+    --text : #fff;
+}
