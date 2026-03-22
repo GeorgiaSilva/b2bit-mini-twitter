@@ -29,7 +29,7 @@ export const login = async (email: string, password: string) => {
     localStorage.setItem("user", JSON.stringify(response.data.user));
     return response.data;
   } catch (error) {
-    throw new Error("Login failed");
+    throw new Error("Login failed", { cause: error });
   }
 };
 
@@ -46,7 +46,7 @@ export const register = async (
     });
     return response.data;
   } catch (error) {
-    throw new Error("Registration failed");
+    throw new Error("Registration failed", { cause: error });
   }
 };
 
