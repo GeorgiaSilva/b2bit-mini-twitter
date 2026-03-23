@@ -16,7 +16,7 @@ export const Navbar = ({
   isAuthenticated,
 }: NavbarProps) => {
   return (
-    <main className="fixed top-0 left-0 w-full flex flex-wrap items-center justify-between gap-3 border-b border-gary-300 dark:border-gray-700 p-3 bg-(--bg) z-10">
+    <main className="fixed top-0 left-0 w-full px-8 flex flex-wrap items-center justify-between gap-3 border-b border-gary-300 dark:border-gray-700 p-3 bg-(--bg) z-10">
       <h6 className="text-lg font-semibold text-(--blue) dark:text-white">Mini Twitter</h6>
       <input
         type="text"

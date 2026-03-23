@@ -15,6 +15,7 @@ import {
   useUpdatePost,
 } from "../hooks/usePosts";
 import type { CreatePostData, PostType, UpdatePostData } from "../types/posts";
+import { Footer } from "../components/footer";
 
 export const Timeline = () => {
   const user = JSON.parse(localStorage.getItem("user") || "null");
@@ -295,6 +296,7 @@ export const Timeline = () => {
         onCancel={() => setDeletePostId(null)}
         onConfirm={onConfirmDelete}
       />
+      <Footer />
     </main>
   );
 };
