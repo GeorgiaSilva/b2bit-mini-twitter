@@ -98,7 +98,7 @@ export const Timeline = () => {
       setActionError(null);
       await logout();
       setIsAuthenticated(false);
-      setActionSuccess("Sessao encerrada. A timeline continua publica.");
+      setActionSuccess("Sessão encerrada. A timeline continua pública.");
     } catch (logoutError) {
       console.error("Logout failed", logoutError);
       setActionError("Falha ao fazer logout.");
@@ -151,7 +151,7 @@ export const Timeline = () => {
     } catch (deleteError) {
       const statusCode = getStatusCodeFromError(deleteError);
       if (statusCode === 403) {
-        setActionError("Voce não tem permissão para excluir esse post.");
+        setActionError("Você não tem permissão para excluir esse post.");
       } else {
         setActionError(deleteError instanceof Error ? deleteError.message : "Falha ao excluir post.");
       }
@@ -181,7 +181,7 @@ export const Timeline = () => {
     event.preventDefault();
     if (!editingPost) return;
     if (!editForm.title.trim() || !editForm.content.trim()) {
-      setActionError("Titulo e conteudo sao obrigatorios.");
+      setActionError("Título e conteúdo são obrigatórios.");
       return;
     }
 
@@ -200,7 +200,7 @@ export const Timeline = () => {
     } catch (updateError) {
       const statusCode = getStatusCodeFromError(updateError);
       if (statusCode === 403) {
-        setActionError("Voce nao tem permissao para editar esse post.");
+        setActionError("Você não tem permissão para editar esse post.");
       } else {
         setActionError(updateError instanceof Error ? updateError.message : "Falha ao editar post.");
       }
@@ -279,7 +279,7 @@ export const Timeline = () => {
         onTitleChange={(value) => setCreateForm((prev) => ({ ...prev, title: value }))}
         onConfirm={async () => {
           if (!createForm.title.trim()) {
-            setActionError("Digite um titulo para o post.");
+            setActionError("Digite um título para o post.");
             return;
           }
           await submitCreatePost();

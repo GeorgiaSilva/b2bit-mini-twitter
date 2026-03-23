@@ -26,13 +26,13 @@ export const PostTitleModal = ({
         }}
         className="w-full max-w-md rounded-lg border border-gray-300 dark:border-gray-600 bg-(--bg) p-5 shadow-xl"
       >
-        <h2 className="text-lg font-semibold mb-3">Titulo do post</h2>
+        <h2 className="text-lg font-semibold mb-3">Título do post</h2>
         <input
           type="text"
           value={title}
           onChange={(event) => onTitleChange(event.target.value)}
           className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-(--card-bg) p-2 outline-none"
-          placeholder="Digite um titulo"
+          placeholder="Digite um título"
           autoFocus
         />
         <div className="mt-4 flex justify-end gap-2">

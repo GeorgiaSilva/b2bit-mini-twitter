@@ -39,7 +39,7 @@ export const AppToast = ({
           type="button"
           onClick={onClose}
           className="ml-auto rounded-md p-1 text-(--text)"
-          aria-label="Fechar notificacao"
+          aria-label="Fechar notificação"
         >
           <X size={16} />
         </button>

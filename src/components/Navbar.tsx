@@ -22,7 +22,7 @@ export const Navbar = ({
         type="text"
         value={search}
         onChange={(event) => onSearchChange(event.target.value)}
-        placeholder="Buscar por titulo ou conteudo..."
+        placeholder="Buscar por título ou conteúdo..."
         className=" rounded-lg border w-100 border-gray-400 bg-(--card-bg) p-2 outline-none"
       />
       <div className="flex items-center gap-2 ">

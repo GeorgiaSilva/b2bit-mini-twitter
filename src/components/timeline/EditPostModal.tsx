@@ -37,13 +37,13 @@ export const EditPostModal = ({
             value={editForm.title}
             onChange={(event) => onTitleChange(event.target.value)}
             className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-(--card-bg) p-2 outline-none"
-            placeholder="Titulo"
+            placeholder="Título"
           />
           <textarea
             value={editForm.content}
             onChange={(event) => onContentChange(event.target.value)}
             className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-(--card-bg) p-2 outline-none min-h-24"
-            placeholder="Conteudo"
+            placeholder="Conteúdo"
           />
           <input
             type="url"
