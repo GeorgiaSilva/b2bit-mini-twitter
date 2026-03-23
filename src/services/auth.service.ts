@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 if (!API_URL) {
@@ -29,7 +29,10 @@ export const login = async (email: string, password: string) => {
     localStorage.setItem("user", JSON.stringify(response.data.user));
     return response.data;
   } catch (error) {
-    throw new Error("Login failed", { cause: error });
+    if (isAxiosError<{ message?: string }>(error)) {
+      throw new Error(error.response?.data?.message || "Falha no login.", { cause: error });
+    }
+    throw new Error("Falha no login.", { cause: error });
   }
 };
 
@@ -46,7 +49,10 @@ export const register = async (
     });
     return response.data;
   } catch (error) {
-    throw new Error("Registration failed", { cause: error });
+    if (isAxiosError<{ message?: string }>(error)) {
+      throw new Error(error.response?.data?.message || "Falha no cadastro.", { cause: error });
+    }
+    throw new Error("Falha no cadastro.", { cause: error });
   }
 };
 
