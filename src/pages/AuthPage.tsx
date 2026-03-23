@@ -110,6 +110,7 @@ export const AuthPage = () => {
                 type="email"
                 label="Email"
                 registration={loginForm.register("email")}
+                error={loginForm.formState.errors.email}
                 placeholder="Insira o seu email"
                 icon={<Mail size={16} />}
               />
@@ -120,6 +121,7 @@ export const AuthPage = () => {
                 type="password"
                 label="Password"
                 registration={loginForm.register("password")}
+                error={loginForm.formState.errors.password}
                 placeholder="Insira sua senha"
                 icon={<Eye size={16} />}
               />
@@ -140,6 +142,7 @@ export const AuthPage = () => {
                 type="text"
                 label="Name"
                 registration={registerForm.register("name")}
+                error={registerForm.formState.errors.name}
                 placeholder="Insira o seu nome"
                 icon={<User size={16} />}
               />
@@ -150,6 +153,7 @@ export const AuthPage = () => {
                 type="email"
                 label="Email"
                 registration={registerForm.register("email")}
+                error={registerForm.formState.errors.email}
                 placeholder="Insira o seu email"
                 icon={<Mail size={16} />}
               />
@@ -160,6 +164,7 @@ export const AuthPage = () => {
                 type="password"
                 label="Password"
                 registration={registerForm.register("password")}
+                error={registerForm.formState.errors.password}
                 placeholder="Insira sua senha"
                 icon={<Eye size={16} />}
               />

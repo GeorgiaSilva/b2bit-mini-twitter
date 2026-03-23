@@ -11,6 +11,11 @@ const authService = axios.create({
   },
 });
 
+type ApiErrorPayload = {
+  message?: string;
+  error?: string;
+};
+
 const saveToken = (token: string) => {
   localStorage.setItem("token", token);
 };
@@ -29,10 +34,7 @@ export const login = async (email: string, password: string) => {
     localStorage.setItem("user", JSON.stringify(response.data.user));
     return response.data;
   } catch (error) {
-    if (isAxiosError<{ message?: string }>(error)) {
-      throw new Error(error.response?.data?.message || "Falha no login.", { cause: error });
-    }
-    throw new Error("Falha no login.", { cause: error });
+    throw new Error("Credenciais inválidas.", { cause: error });
   }
 };
 
@@ -49,8 +51,10 @@ export const register = async (
     });
     return response.data;
   } catch (error) {
-    if (isAxiosError<{ message?: string }>(error)) {
-      throw new Error(error.response?.data?.message || "Falha no cadastro.", { cause: error });
+    if (isAxiosError<ApiErrorPayload>(error)) {
+      throw new Error( error.response?.data?.message || "Falha no cadastro.", {
+        cause: error,
+      });
     }
     throw new Error("Falha no cadastro.", { cause: error });
   }

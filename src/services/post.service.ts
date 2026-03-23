@@ -11,6 +11,11 @@ const postApi = axios.create({
   },
 });
 
+type ApiErrorPayload = {
+  message?: string;
+  error?: string;
+};
+
 postApi.interceptors.request.use((config) => {
   const token = getToken();
   if (token) {
@@ -24,11 +29,11 @@ const resolvePostApiErrorMessage = (
   fallbackMessage: string,
   unauthenticatedMessage = "Você precisa estar logado para continuar.",
 ) => {
-  if (isAxiosError<{ message?: string }>(error)) {
+  if (isAxiosError<ApiErrorPayload>(error)) {
     if (error.response?.status === 401) {
       return unauthenticatedMessage;
     }
-    return error.response?.data?.message || fallbackMessage;
+    return error.response?.data?.error || error.response?.data?.message || fallbackMessage;
   }
   return fallbackMessage;
 };

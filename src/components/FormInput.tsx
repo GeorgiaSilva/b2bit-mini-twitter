@@ -17,13 +17,15 @@ export const FormInput = (props: FormInputProps) => {
   return (
     <div className="mb-4 gap-1 flex flex-col">
       <label
-        htmlFor="email"
+        htmlFor={props.id}
         className="block text-sm font-medium text-gray-700 dark:text-gray-300 border-none"
       >
         {props.label}
       </label>
       <div className="flex border border-gray-300 dark:border-gray-600 items-center rounded-md p-2 px-4 bg-(--card-bg) ">
       <input
+        id={props.id}
+        type={props.type}
         {...props.registration}
         placeholder={props.placeholder}
         className="flex-1"
