@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { ImagePlus } from "lucide-react";
 import { Navbar } from "../components/Navbar";
-import { Post } from "../components/Post";
 import { AppToast } from "../components/AppToast";
 import { ConfirmDialog } from "../components/ConfirmDialog";
+import { EditPostModal } from "../components/timeline/EditPostModal";
+import { PostComposer } from "../components/timeline/PostComposer";
+import { PostTitleModal } from "../components/timeline/PostTitleModal";
+import { PostsFeed } from "../components/timeline/PostsFeed";
 import { getToken, logout } from "../services/auth.service";
 import {
   useCreatePost,
@@ -148,7 +150,7 @@ export const Timeline = () => {
     } catch (deleteError) {
       const statusCode = getStatusCodeFromError(deleteError);
       if (statusCode === 403) {
-        setActionError("Voce nao tem permissao para excluir esse post.");
+        setActionError("Voce não tem permissão para excluir esse post.");
       } else {
         setActionError(deleteError instanceof Error ? deleteError.message : "Falha ao excluir post.");
       }
@@ -223,183 +225,70 @@ export const Timeline = () => {
         message={actionSuccess}
         variant="success"
         onClose={() => setActionSuccess(null)}
-        className="top-[152px]"
+        className=""
       />
 
       <section className="flex w-full justify-center pt-24 px-4">
         <div className="flex flex-col gap-4 w-full max-w-2xl">
-          <form
+          <PostComposer
+            createForm={createForm}
+            showImageField={showImageField}
+            isSubmitting={createMutation.isPending}
+            onToggleImageField={() => setShowImageField((prev) => !prev)}
+            onContentChange={(value) =>
+              setCreateForm((prev) => ({ ...prev, content: value }))
+            }
+            onImageChange={(value) =>
+              setCreateForm((prev) => ({ ...prev, image: value }))
+            }
             onSubmit={onCreateSubmit}
-            className="border border-gray-700 rounded-lg shadow-sm bg-(--card-bg) flex flex-col gap-3 p-3"
-          >
-            <textarea
-              value={createForm.content}
-              onChange={(event) =>
-                setCreateForm((prev) => ({ ...prev, content: event.target.value }))
-              }
-              placeholder="E ai, o que esta rolando?"
-              className="w-full bg-transparent p-2 outline-none min-h-20 resize-none"
-            />
-            {showImageField && (
-              <input
-                type="url"
-                value={createForm.image || ""}
-                onChange={(event) =>
-                  setCreateForm((prev) => ({ ...prev, image: event.target.value }))
-                }
-                placeholder="URL da imagem (opcional)"
-                className="w-full rounded-md border border-gray-600 bg-transparent p-2 outline-none"
-              />
-            )}
-            <div className="flex items-center justify-between border-t border-gray-700 pt-2">
-              <button
-                type="button"
-                onClick={() => setShowImageField((prev) => !prev)}
-                className="rounded-md p-2 text-(--blue) hover:bg-white/5 transition-colors"
-                aria-label="Adicionar imagem"
-              >
-                <ImagePlus size={18} />
-              </button>
-              <button
-                type="submit"
-                className="rounded-full bg-(--blue) px-5 py-1.5 text-white text-sm transition-opacity disabled:opacity-60"
-                disabled={createMutation.isPending}
-              >
-                {createMutation.isPending ? "Postando..." : "Postar"}
-              </button>
-            </div>
-          </form>
+          />
 
-          {isLoading && <p>Carregando posts...</p>}
-          {isError && (
-            <p className="text-red-400">
-              Erro ao carregar posts: {error instanceof Error ? error.message : "Erro desconhecido"}
-            </p>
-          )}
-
-          {!isLoading && !isError && postsFlattened.length === 0 && (
-            <p>Nenhum post encontrado.</p>
-          )}
-
-          {postsFlattened.map((post) => (
-            <Post
-              key={post.id}
-              {...post}
-              currentUserId={currentUserId}
-              onLike={onLike}
-              onEdit={onEdit}
-              onDelete={onDelete}
-            />
-          ))}
-
-          <div ref={loadMoreRef} className="h-8" />
-          {isFetchingNextPage && <p>Carregando mais...</p>}
+          <PostsFeed
+            isLoading={isLoading}
+            isError={isError}
+            error={error}
+            posts={postsFlattened}
+            currentUserId={currentUserId}
+            onLike={onLike}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            isFetchingNextPage={isFetchingNextPage}
+            loadMoreRef={loadMoreRef}
+          />
         </div>
       </section>
 
-      {editingPost && (
-        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-          <form
-            onSubmit={onUpdateSubmit}
-            className="w-full max-w-xl rounded-lg border border-gray-700 bg-(--bg) p-5 shadow-xl"
-          >
-            <h2 className="text-lg font-semibold mb-4">Editar post</h2>
-            <div className="flex flex-col gap-3">
-              <input
-                type="text"
-                value={editForm.title}
-                onChange={(event) =>
-                  setEditForm((prev) => ({ ...prev, title: event.target.value }))
-                }
-                className="w-full rounded-md border border-gray-600 bg-(--card-bg) p-2 outline-none"
-                placeholder="Titulo"
-              />
-              <textarea
-                value={editForm.content}
-                onChange={(event) =>
-                  setEditForm((prev) => ({ ...prev, content: event.target.value }))
-                }
-                className="w-full rounded-md border border-gray-600 bg-(--card-bg) p-2 outline-none min-h-24"
-                placeholder="Conteudo"
-              />
-              <input
-                type="url"
-                value={editForm.image || ""}
-                onChange={(event) =>
-                  setEditForm((prev) => ({ ...prev, image: event.target.value }))
-                }
-                className="w-full rounded-md border border-gray-600 bg-(--card-bg) p-2 outline-none"
-                placeholder="URL da imagem (opcional)"
-              />
-            </div>
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                type="button"
-                className="rounded-md border border-gray-600 px-4 py-2"
-                onClick={() => setEditingPost(null)}
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                className="rounded-md bg-(--blue) px-4 py-2 text-white disabled:opacity-60"
-                disabled={updateMutation.isPending}
-              >
-                {updateMutation.isPending ? "Salvando..." : "Salvar"}
-              </button>
-            </div>
-          </form>
-        </section>
-      )}
+      <EditPostModal
+        open={Boolean(editingPost)}
+        editForm={editForm}
+        isSubmitting={updateMutation.isPending}
+        onClose={() => setEditingPost(null)}
+        onTitleChange={(value) => setEditForm((prev) => ({ ...prev, title: value }))}
+        onContentChange={(value) => setEditForm((prev) => ({ ...prev, content: value }))}
+        onImageChange={(value) => setEditForm((prev) => ({ ...prev, image: value }))}
+        onSubmit={onUpdateSubmit}
+      />
 
-      {showTitleModal && (
-        <section className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-          <form
-            onSubmit={async (event) => {
-              event.preventDefault();
-              if (!createForm.title.trim()) {
-                setActionError("Digite um titulo para o post.");
-                return;
-              }
-              await submitCreatePost();
-            }}
-            className="w-full max-w-md rounded-lg border border-gray-700 bg-(--bg) p-5 shadow-xl"
-          >
-            <h2 className="text-lg font-semibold mb-3">Titulo do post</h2>
-            <input
-              type="text"
-              value={createForm.title}
-              onChange={(event) =>
-                setCreateForm((prev) => ({ ...prev, title: event.target.value }))
-              }
-              className="w-full rounded-md border border-gray-600 bg-(--card-bg) p-2 outline-none"
-              placeholder="Digite um titulo"
-              autoFocus
-            />
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                type="button"
-                className="rounded-md border border-gray-600 px-4 py-2"
-                onClick={() => setShowTitleModal(false)}
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                className="rounded-md bg-(--blue) px-4 py-2 text-white disabled:opacity-60"
-                disabled={createMutation.isPending}
-              >
-                {createMutation.isPending ? "Postando..." : "Confirmar"}
-              </button>
-            </div>
-          </form>
-        </section>
-      )}
+      <PostTitleModal
+        open={showTitleModal}
+        title={createForm.title}
+        isSubmitting={createMutation.isPending}
+        onClose={() => setShowTitleModal(false)}
+        onTitleChange={(value) => setCreateForm((prev) => ({ ...prev, title: value }))}
+        onConfirm={async () => {
+          if (!createForm.title.trim()) {
+            setActionError("Digite um titulo para o post.");
+            return;
+          }
+          await submitCreatePost();
+        }}
+      />
 
       <ConfirmDialog
         open={Boolean(deletePostId)}
         title="Excluir post"
-        description="Essa acao nao pode ser desfeita. Deseja continuar?"
+        description="Essa ação não pode ser desfeita. Deseja continuar?"
         confirmText="Excluir"
         cancelText="Cancelar"
         loading={deleteMutation.isPending}

@@ -17,15 +17,15 @@ export const Navbar = ({
 }: NavbarProps) => {
   return (
     <main className="fixed top-0 left-0 w-full flex flex-wrap items-center justify-between gap-3 border-b border-gary-300 dark:border-gray-700 p-3 bg-(--bg) z-10">
-      <h6 className="text-lg font-semibold text-(--blue) dark:text-(--text) whitespace-nowrap">Mini Twitter</h6>
+      <h6 className="text-lg font-semibold text-(--blue) dark:text-white">Mini Twitter</h6>
       <input
         type="text"
         value={search}
         onChange={(event) => onSearchChange(event.target.value)}
         placeholder="Buscar por titulo ou conteudo..."
-        className="order-3 sm:order-none w-full sm:w-auto sm:flex-1 sm:max-w-lg rounded-lg border border-gray-700 bg-(--card-bg) p-2 outline-none"
+        className=" rounded-lg border w-100 border-gray-400 bg-(--card-bg) p-2 outline-none"
       />
-      <div className="flex items-center gap-2 ml-auto sm:ml-0">
+      <div className="flex items-center gap-2 ">
         <ThemeToggle />
         {isAuthenticated ? (
           <button

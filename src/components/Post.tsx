@@ -25,7 +25,7 @@ export const Post = ({
 }: PostProps) => {
   const isOwner = String(authorId) === String(currentUserId);
   return (
-    <main className="border border-gray-700 p-4 rounded-lg text-(--text) dark:text-white shadow-sm bg-(--card-bg)">
+    <main className="border border-gray-300 dark:border-gray-600 p-4 rounded-lg text-(--text) dark:text-white shadow-sm bg-(--card-bg)">
         <div className="flex gap-4 items-center">
             <h5 className="text-lg font-semibold">{authorName}</h5>
             <span className="text-gray-500">{new Date(createdAt).toLocaleString("pt-BR")}</span>
@@ -36,7 +36,7 @@ export const Post = ({
         <img
           src={ image}
           alt={title}
-          className="mt-3 w-full rounded-md border border-gray-700 object-cover max-h-80"
+          className="mt-3 w-full rounded-md  object-cover max-h-80"
         />
       )}
       <footer className="mt-2 flex items-center justify-between">
